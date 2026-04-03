@@ -50,6 +50,23 @@ for y in noisy_sin[0]:
     del moving_pass[0]
     moving_pass.append(y)
 
+
+# ------------------------------------------------------------------------------ 
+# LOW PASS FILTER
+alpha = 0.61
+low_pass_filtered = []
+
+for y in noisy_sin[0]:
+    if not low_pass_filtered:
+        low_pass_filtered.append(y)
+        continue
+
+    yf = alpha * low_pass_filtered[-1] + (1 - alpha) * y
+    low_pass_filtered.append(yf)
+
+# ------------------------------------------------------------------------------ 
+
+
 # ------------------------------------------------------------------------------ 
 
 display_graph(
@@ -61,15 +78,15 @@ display_graph(
             "line-type": "--"
         },
         {
-            "data": moving_pass_filtered,
-            "label": "mpf",
+            "data": low_pass_filtered,
+            "label": "lpf",
             "color": "red",
             "line-type": "-"
         },
     ],
     time = noisy_sin[1],
     properties = {
-        "title": "Noisy Sine Graph",
+        "title": f"First Order Low Pass Filter (alpha = {alpha})",
         "x-label": "Time (ms)",
         "y-label": "Sine"
     }
